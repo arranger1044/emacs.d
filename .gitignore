@@ -1,0 +1,13 @@
+/.emacs.desktop.lock
+/.emacs.desktop
+/ac-comphist.dat
+rano/workgroups/session
+
+# compiled files
+*.elc
+
+# saved changes
+*~
+
+# mac DS_Store
+.DS_Store
