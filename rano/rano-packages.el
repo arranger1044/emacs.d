@@ -81,7 +81,12 @@
 ;;       (setq flycheck-clang-include-path (list (file-name-directory (buffer-file-name))))))
 ;; (add-hook 'flycheck-before-syntax-check-hook 'flycheck-clang-include-local-dir)
 
-
+(defun flycheck-c++11-support-enabled ()
+  "Enable the c++11 standard support for clang"
+  (if (derived-mode-p 'c++-mode)
+      (setq flycheck-clang-language-standard "c++11")
+      (setq flycheck-clang-standard-library  "libc++")))
+(add-hook 'flycheck-before-syntax-check-hook 'flycheck-c++11-support-enabled)
 
 ;; clang-format.el is modified to include Allman's style inline atm
 (load "~/.emacs.d/rano/clang-format/clang-format.el")
@@ -105,7 +110,7 @@
 (yas-global-mode 1)
 
 ;; workgroups2 for session management
-(require 'workgroups2)
+;(require 'workgroups2)
 ;(setq wg-default-session-file "~/.emacs.d/rano/workgroups/.emacs_workgroups")
 ;(workgroups-mode 1)
 ;(require 'desktop)
@@ -114,12 +119,12 @@
 ;(setq desktop-restore-frames nil)
 (desktop-save-mode 1)
 
-(require 'workgroups2)
-(setq wg-use-default-session-file nil
-      wg-default-session-file  "~/.emacs.d/rano/workgroups/session")
-(add-hook 'auto-save-hook 'wg-update-current-workgroup-working-wconfig)
-(add-hook 'emacs-startup-hook 'wg-reload-session)
-(workgroups-mode 1)
+;(require 'workgroups2)
+;(setq wg-use-default-session-file nil
+;      wg-default-session-file  "~/.emacs.d/rano/workgroups/session")
+;(add-hook 'auto-save-hook 'wg-update-current-workgroup-working-wconfig)
+;(add-hook 'emacs-startup-hook 'wg-reload-session)
+;(workgroups-mode 1)
 
 
 ;; powerline
