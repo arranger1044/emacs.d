@@ -3,6 +3,9 @@
 /ac-comphist.dat
 rano/workgroups/session
 
+# package files installed
+/elpa/*
+
 # compiled files
 *.elc
 
