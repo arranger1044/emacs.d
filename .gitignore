@@ -9,8 +9,16 @@ rano/workgroups/session
 # compiled files
 *.elc
 
+
 # saved changes
 *~
 
 # mac DS_Store
 .DS_Store
+
+# projectile
+projectile.cache
+projectile-bookmarks.eld
+
+# package cookies
+url/cookies

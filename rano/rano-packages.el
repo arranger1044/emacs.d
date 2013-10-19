@@ -15,7 +15,9 @@
 
 ;; rainbox parenthesis (used for each programming language)
 (require 'rainbow-delimiters)
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+;(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 ;; frame-restore to restore last frame sizes and position
 (add-to-list 'load-path "~/.emacs.d/rano/frame-restore")
@@ -53,9 +55,17 @@
 
 ;; idomenu for mini-buffer real fast completion
 (require 'ido)
-(ido-mode t) 
-(setq ido-enable-flex-matching t) 
+;(ido-mode t) 
+;(setq ido-enable-flex-matching t) 
+
+(require 'flx-ido)
+(ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
 (autoload 'idomenu "idomenu" nil t)
+;; disable ido faces to see flx highlights.
+(setq ido-use-faces nil)
+;(setq flx-ido-use-faces nil)
 					;(require 'idomenu)
 
 (require 'smex) ; Not needed if you use package.el
@@ -84,8 +94,8 @@
 (defun flycheck-c++11-support-enabled ()
   "Enable the c++11 standard support for clang"
   (if (derived-mode-p 'c++-mode)
-      (setq flycheck-clang-language-standard "c++11")
-      (setq flycheck-clang-standard-library  "libc++")))
+     (setq flycheck-clang-language-standard "c++11"
+           flycheck-clang-standard-library  "libc++")))
 (add-hook 'flycheck-before-syntax-check-hook 'flycheck-c++11-support-enabled)
 
 ;; clang-format.el is modified to include Allman's style inline atm
@@ -98,6 +108,9 @@
 
 ;; procjectile for project management
 (require 'projectile)
+(projectile-global-mode)
+(setq projectile-enable-caching t)
+
 
 ;; magit for git integration
 (require 'magit)
