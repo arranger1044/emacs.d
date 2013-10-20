@@ -101,6 +101,14 @@
 ;; clang-format.el is modified to include Allman's style inline atm
 (load "~/.emacs.d/rano/clang-format/clang-format.el")
 (global-set-key [C-M-tab] 'clang-format-region)
+;; automatically format before saving in c++/c-modes
+(defun clang-format-before-save ()
+  (interactive)
+  (when (or (eq major-mode 'c++-mode)
+	    (eq major-mode 'c-mode))
+    (clang-format-buffer)))
+
+(add-hook 'before-save-hook 'clang-format-before-save)
 
 ;; undo-tree
 (require 'undo-tree)
