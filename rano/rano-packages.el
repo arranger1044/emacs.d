@@ -5,8 +5,84 @@
 
 ;; package management
 
-;;; Code
+;;; Code:
 
+
+;;pakages
+(when (>= emacs-major-version 24)
+  (require 'package)
+  
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+  (package-initialize)
+  )
+
+;; auto installing when missing
+(setq rano-packages
+      '(
+        auto-indent-mode
+        rainbow-delimiters
+        frame-restore
+        auto-complete
+        auto-complete-config
+        auto-complete-clang
+	ace-jump-mode
+        flx-ido
+        smex
+        flycheck
+        undo-tree
+        projectile
+        magit
+        powerline
+        flycheck-color-mode-line
+        processing-mode
+        prolog
+	sr-speedbar
+	hideshowvis
+        yasnippet
+	fold-dwim
+	smooth-scrolling
+        ))
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+(dolist (pkg rano-packages)
+  (when (and (not (package-installed-p pkg))
+             (assoc pkg package-archive-contents))
+    (package-install pkg)))
+
+(defun package-list-unaccounted-packages ()
+  "Like `package-list-packages', but shows only the packages that
+  are installed and are not in `rano-packages'.  Useful for
+  cleaning out unwanted packages."
+  (interactive)
+  (package-show-package-list
+   (remove-if-not (lambda (x) (and (not (memq x rano-packages))
+                                   (not (package-built-in-p x))
+                                   (package-installed-p x)))
+                  (mapcar 'car package-archive-contents))))
+
+
+;; sr-sppedbar
+;; show the speedbar in the same frame (another window)
+(require 'sr-speedbar)
+
+;; enable hideshow folding widgets
+(require 'hideshowvis)
+(autoload 'hideshowvis-enable "hideshowvis" "Highlight foldable regions")
+
+(autoload 'hideshowvis-minor-mode
+  "hideshowvis"
+  "Will indicate regions foldable with hideshow in the fringe."
+  'interactive)
+
+(dolist (hook (list 'emacs-lisp-mode-hook
+                    'c++-mode-hook))
+  (add-hook hook 'hideshowvis-enable))
+
+(hideshowvis-symbols)
+;(setq hs-set-up-overlay 'hs-abstract-overlay)
 
 ;; auto-indent
 ;(setq auto-indent-on-visit-file t) ;; If you want auto-indent on for files
@@ -41,6 +117,7 @@
 (defun my-ac-cc-mode-setup ()
   (setq ac-sources (append '(ac-source-clang ac-source-yasnippet) ac-sources)))
 (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
+(add-hook 'c++-mode-hook 'my-ac-cc-mode-setup)
 ;; ac-source-gtags
 (my-ac-config)
 
@@ -67,6 +144,7 @@
 (setq ido-use-faces nil)
 ;(setq flx-ido-use-faces nil)
 					;(require 'idomenu)
+
 
 (require 'smex) ; Not needed if you use package.el
 (smex-initialize)
@@ -114,6 +192,10 @@
 (require 'undo-tree)
 (global-undo-tree-mode 1)
 
+;; smooth-scroll
+;; (require 'smooth-scroll)
+;; (smooth-scroll-mode t)
+
 ;; procjectile for project management
 (require 'projectile)
 (projectile-global-mode)
@@ -125,6 +207,7 @@
 
 ;; yasnippet for text snippet
 (require 'yasnippet)
+(setq yas-snippet-dirs '("~/.emacs.d/rano/snippets"))
 ;;(setq yas/root-directory '("~/.emacs.d/rano/snippets"))
 ;; Map `yas/load-directory' to every element
 ;;(mapc 'yas/load-directory yas/root-directory)
@@ -178,6 +261,23 @@
 (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode)
                                 ("\\.m$" . mercury-mode))
                               auto-mode-alist))
+
+;; ace-jump mode
+;; jumping throught text via char finding
+(require 'ace-jump-mode)
+
+;; (require 'sublimity)
+;; ;; (require 'sublimity-scroll)
+;; (require 'sublimity-map)
+;; (setq sublimity-map-on-scroll t)
+;; (sublimity-global-mode)
+;; (sublimity-)
+;; ;; (setq sublimity-scroll-weight 1
+;; ;;       sublimity-scroll-drift-length 10)
+
+(require 'smooth-scrolling)
+
+;;(require 'minimap)
 
 (provide 'rano-packages)
 ;;; rano-packages.el ends here
