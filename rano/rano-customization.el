@@ -13,7 +13,9 @@
 (global-linum-mode t)
 
 ;; I like the toolbar even if it is ugly
-(tool-bar-mode 1)
+					;(tool-bar-mode 1)
+					; maybe not anymore
+(tool-bar-mode -1)
 
 ;; I like the scroll bar too
 (set-scroll-bar-mode 'right)

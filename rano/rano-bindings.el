@@ -9,6 +9,8 @@
 ;; This is your old M-x.
 (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
+;; sr-speedbar
+(global-set-key (kbd "s-.") 'sr-speedbar-toggle)
 
 ;;; IDO
 
@@ -27,10 +29,23 @@
 (global-set-key (kbd "C-'") 'ac-complete-clang)
 
 
+;; ace-jump-mode
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
+
 ;; undo-tree remapping
 (global-set-key (kbd "C-z") 'undo)
 (global-set-key (kbd "C-S-z") 'undo-tree-redo) 
 
+
+;; copying leaving the region highlighted
+(defun kill-ring-save-keep-highlight (beg end)
+  "Keep the region active after the kill"
+  (interactive "r")
+  (prog1 (kill-ring-save beg end)
+    (setq deactivate-mark nil)))
+
+(global-set-key (kbd "M-W") 'kill-ring-save-keep-highlight)
 
 ;; icicles binding
 					;(icy-mode 1)
