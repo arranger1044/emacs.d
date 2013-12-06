@@ -32,11 +32,18 @@
 ;; ace-jump-mode
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
+;; highlight symbol
+(global-set-key (kbd "C-<f3>") 'highlight-symbol-at-point)
+(global-set-key (kbd "<f3>") 'highlight-symbol-next)
+(global-set-key (kbd "S-<f3>") 'highlight-symbol-prev)
+(global-set-key (kbd "M-<f3>") 'highlight-symbol-prev)
 
 ;; undo-tree remapping
 (global-set-key (kbd "C-z") 'undo)
 (global-set-key (kbd "C-S-z") 'undo-tree-redo) 
 
+;;expand-region
+(global-set-key (kbd "C-.") 'er/expand-region)
 
 ;; copying leaving the region highlighted
 (defun kill-ring-save-keep-highlight (beg end)
@@ -51,20 +58,23 @@
 					;(icy-mode 1)
 
 ;; brackets and special chars under mac os x with an italian keyboard
-(define-key global-map (kbd "M-è") "[")
-(define-key global-map (kbd "M-+") "]")
+;; (define-key global-map (kbd "M-è") "[")
+;; (define-key global-map (kbd "M-+") "]")
 
-(define-key global-map (kbd "M-é") "{")
-(define-key global-map (kbd "M-*") "}")
+;; (define-key global-map (kbd "M-é") "{")
+;; (define-key global-map (kbd "M-*") "}")
 
-(define-key global-map (kbd "M-à") "#")
+;; (define-key global-map (kbd "M-à") "#")
 
-(define-key global-map (kbd "M-ò") "@")
+;; (define-key global-map (kbd "M-ò") "@")
 
-(define-key global-map (kbd "M-e") "€")
+;; (define-key global-map (kbd "M-e") "€")
 
-(define-key global-map (kbd "M-5") "~")
+;; (define-key global-map (kbd "M-5") "~")
 
+;; using command as meta
+(setq mac-command-modifier 'meta)
+(setq mac-option-modifier 'none)
 
 
 

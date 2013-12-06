@@ -3,11 +3,14 @@
 ;; look&feel customizations
 
 ;;override theme (must come after package initialization
+;;(setq solarized-high-contrast-mode-line t)
+(setq solarized-distinct-fringe-background t)
 (load-theme 'solarized-dark t)
 
 ;; custom-font
 ;(add-to-list 'default-frame-alist '(font . "Inconsolata 14"))
-(set-frame-font "Inconsolata 14")
+					;(set-frame-font "Inconsolata 13")
+(set-face-attribute 'default nil :font "Inconsolata-13")
 
 ;; line numbers
 (global-linum-mode t)
@@ -30,8 +33,9 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 
-;; Save all tempfiles in $TMPDIR/emacs$UID/                                                        
-(defconst emacs-tmp-dir (format "%s/%s%s/" temporary-file-directory "emacs" (user-uid)))
+;; Save all tempfiles in $TMPDIR/emacs$UID/                    
+(defconst emacs-tmp-dir (format "%s/%s%s/"
+				temporary-file-directory "emacs" (user-uid)))
 (setq backup-directory-alist `((".*" . ,emacs-tmp-dir)))
 (setq auto-save-file-name-transforms `((".*" ,emacs-tmp-dir t)))
 (setq auto-save-list-file-prefix  emacs-tmp-dir)

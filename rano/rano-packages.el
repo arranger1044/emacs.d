@@ -12,8 +12,10 @@
 (when (>= emacs-major-version 24)
   (require 'package)
   
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+  (add-to-list 'package-archives '("melpa" .
+				   "http://melpa.milkbox.net/packages/") t)
+  (add-to-list 'package-archives '("marmalade" .
+				   "http://marmalade-repo.org/packages/") t)
   (package-initialize)
   )
 
@@ -22,6 +24,7 @@
       '(
         auto-indent-mode
         rainbow-delimiters
+	rainbow-mode
         frame-restore
         auto-complete
         auto-complete-config
@@ -42,6 +45,13 @@
         yasnippet
 	fold-dwim
 	smooth-scrolling
+	auctex
+	column-marker
+	highlight-symbol
+	cider
+	smartparens
+	ac-nrepl
+	expand-region
         ))
 
 (when (not package-archive-contents)
@@ -107,11 +117,14 @@
 (require 'auto-complete-clang)
 
 (defun my-ac-config ()
-  (setq-default ac-sources '(ac-source-abbrev ac-source-dictionary ac-source-words-in-same-mode-buffers))
+  (setq-default ac-sources '(ac-source-abbrev
+			     ac-source-dictionary
+			     ac-source-words-in-same-mode-buffers))
   (add-hook 'emacs-lisp-mode-hook 'ac-emacs-lisp-mode-setup)
   ;; (add-hook 'c-mode-common-hook 'ac-cc-mode-setup)
   ;;(add-hook 'ruby-mode-hook 'ac-ruby-mode-setup)
   ;;(add-hook 'css-mode-hook 'ac-css-mode-setup)
+  (add-hook 'cider-nrepl-mode-hook 'ac-nrepl-setup)
   (add-hook 'auto-complete-mode-hook 'ac-common-setup)
   (global-auto-complete-mode t))
 (defun my-ac-cc-mode-setup ()
@@ -122,7 +135,8 @@
 (my-ac-config)
 
 ;; for balancing parenthesys
-(electric-pair-mode t)
+;;(electric-pair-mode t)
+
 
 ;; for auto-indenting
 (electric-indent-mode 1)
@@ -278,6 +292,81 @@
 (require 'smooth-scrolling)
 
 ;;(require 'minimap)
+
+;; column-marker
+; for highliting past 80 chars a column
+(require 'column-marker)
+(mapc (lambda (hook)
+        (add-hook hook (lambda () (interactive) (column-marker-1 80))))
+      '(c-mode-hook
+        emacs-lisp-mode-hook
+        c++-mode-hook
+        text-mode-hook))
+
+(require 'highlight-symbol)
+
+;; auctex
+(require 'tex-site)
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq TeX-PDF-mode t)
+(setq-default TeX-master nil)
+(setq LaTeX-enable-toolbar t)
+
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTeX t)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+
+
+;; setting the environment
+;; (getenv "PATH")
+(setenv "PATH"
+        (concat
+         "/usr/texbin" ":"
+         "/usr/local/bin" ":"
+         (getenv "PATH")))
+
+(setq exec-path (append exec-path '("/usr/local/bin")))
+
+;; (setq TeX-view-program-selection '((output-pdf "PDF Viewer")))
+;; (defun pdf-preview ()
+;;   (add-to-list 'TeX-output-view-style
+;;                '("^pdf$" "." "open -a Preview.app %s.pdf")))
+;; (add-hook  'LaTeX-mode-hook  'pdf-preview)
+
+(setq TeX-view-program-selection '((output-pdf "Preview")))
+(setq TeX-view-program-list
+      '(("Preview" "open -a Preview.app %s.pdf")))
+
+;; (setq TeX-view-program-list
+;;       '(("Preview" "open -a Preview.app %s.pdf")))
+
+;; ;; paredit
+;; (autoload 'enable-paredit-mode "paredit"
+;;   "Turn on pseudo-structural editing of Lisp code." t)
+
+(require 'smartparens-config)
+;; (smartparens-mode t)
+(show-smartparens-global-mode +1)
+(smartparens-global-mode t)
+
+;; org mode
+(setq org-log-done 'time)
+
+;; winner mode
+;; (when (fboundp 'winner-mode
+;;(winner-mode 1))
+(winner-mode 1)
+
+
+;; expand-region
+(require 'expand-region)
+
+
+;;cider
+(require 'cider)
+(add-hook 'cider-repl-mode-hook 'smartparens-strict-mode)
+(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
 
 (provide 'rano-packages)
 ;;; rano-packages.el ends here
