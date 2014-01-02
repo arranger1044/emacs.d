@@ -247,9 +247,10 @@
 
 ;; powerline
 (require 'powerline)
-(setq powerline-default-separator 'curve)
-(powerline-reset)
-(powerline-default-theme)
+;;(setq powerline-default-separator 'curve)
+;; (powerline-reset)
+;;(powerline-default-theme)
+(powerline-center-theme)
 
 ;; flycheck-color-mode-line
 (require 'flycheck-color-mode-line)
@@ -263,6 +264,17 @@
 (setq processing-location "/usr/bin/processing-java")
 (setq processing-application-dir "/Applications/Processing.app")
 (setq processing-sketchbook-dir "~/Documents/Processing")
+(defun processing-mode-init ()
+  (make-local-variable 'ac-sources)
+  (setq ac-sources '(ac-source-dictionary ac-source-yasnippet))
+  (make-local-variable 'ac-user-dictionary)
+  (setq ac-user-dictionary (append processing-functions
+                                   processing-builtins
+                                   processing-constants)))
+
+(add-to-list 'ac-modes 'processing-mode)
+(add-hook 'processing-mode-hook 'processing-mode-init)
+
 
 ;; prolog mode
 ;;(add-to-list 'load-path "~/.emacs.d/rano/prolog")
