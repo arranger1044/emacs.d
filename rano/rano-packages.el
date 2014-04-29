@@ -52,6 +52,13 @@
 	smartparens
 	ac-nrepl
 	expand-region
+	tabbar
+	tabbar-ruler
+	highlight-indentation
+	python-mode
+	jedi
+	python-environment
+	fic-mode
         ))
 
 (when (not package-archive-contents)
@@ -349,7 +356,9 @@
 (setq TeX-view-program-selection '((output-pdf "Preview")))
 (setq TeX-view-program-list
       '(("Preview" "open -a Preview.app %s.pdf")))
-
+(setq-default ispell-program-name "aspell")
+(setq-default ispell-extra-args '("--reverse"))
+(setq ispell-dictionary "italiano")
 ;; (setq TeX-view-program-list
 ;;       '(("Preview" "open -a Preview.app %s.pdf")))
 
@@ -379,6 +388,116 @@
 (require 'cider)
 (add-hook 'cider-repl-mode-hook 'smartparens-strict-mode)
 (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
+
+
+;; tabbar-ruler
+;; (setq tabbar-ruler-popup-toolbar t) ;
+;; (setq tabbar-ruler-popup-scrollbar t)
+;; (require 'tabbar-ruler)
+;; (tabbar-ruler-group-by-projectile-project)
+;; (global-set-key (kbd "C-c t") 'tabbar-ruler-move)
+
+
+;;;;;;;;;;;;; python
+
+;; highlight indentation
+(require 'highlight-indentation)
+(add-hook 'python-mode-hook 'highlight-indentation-mode)
+(add-hook 'python-mode-hook (lambda ()
+			      (highlight-indentation-set-offset 4)))
+
+
+;; jedi
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
+
+
+;------------- taken from
+;------------- https://github.com/jhamrick/emacs
+
+
+
+;; from python.el
+;;(require 'python)
+(require 'python-mode)
+
+;; (setq-default python-indent-guess-indent-offset nil)
+;; (setq-default python-indent-offset 4)
+;; (setq-default python-indent 4)
+
+(autoload 'python-mode "python-mode" "Python Mode." t)
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+
+(defun system-is-mac ()
+  (interactive)
+  (string-equal system-type "darwin"))
+
+(defun system-is-linux ()
+  (interactive)
+  (string-equal system-type "gnu/linux"))
+
+(setq
+ python-shell-interpreter "ipython"
+ python-shell-interpreter-args (if (system-is-mac)
+                                   "--gui=osx --matplotlib=osx --colors=Linux --pylab"
+                                 (if (system-is-linux)
+                                     "--gui=wx --matplotlib=wx --colors=Linux --pylab"))
+ python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+ python-shell-prompt-output-regexp "Out \\[[0-9]+\\]: "
+ python-shell-completion-setup-code
+ "from IPython.core.completerlib import module_completion"
+ python-shell-completion-module-string-code
+ "';'.join(module_completion('''%s'''))\n"
+ python-shell-completion-string-code
+ "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+
+;; fic-mode hihglighting FIXME TODO BUG
+(require 'fic-mode)
+(add-hook 'c++-mode-hook 'turn-on-fic-mode)
+(add-hook 'java-mode-hook 'turn-on-fic-mode)
+(add-hook 'processing-mode-hook 'turn-on-fic-mode)
+(add-hook 'python-mode-hook 'turn-on-fic-mode)
+
+;; (add-hook 'python-mode-hook (lambda () (setq python-indent-offset 4)))
+
+
+;; -----------------------------
+;; emacs IPython notebook config
+;; -----------------------------
+
+					; use autocompletion, but don't start to autocomplete after a dot
+(setq ein:complete-on-dot -1)
+(setq ein:use-auto-complete 1)
+
+;; ; set python console args
+(setq ein:console-args
+      (if (system-is-mac)
+          '("--gui=osx" "--matplotlib=osx" "--colors=Linux" "--pylab")
+        (if (system-is-linux)
+            '("--gui=wx" "--matplotlib=wx" "--colors=Linux" "--pylab"))))
+
+;; ; timeout settings
+(setq ein:query-timeout 1000)
+
+; IPython notebook
+;;(include-plugin "emacs-ipython-notebook/lisp")
+(require 'ein)
+
+; shortcut function to load notebooklist
+(defun load-ein ()
+  (ein:notebooklist-load)
+  (interactive)
+  (ein:notebooklist-open))
+
+                                        ; Set PYTHONPATH, because we don't load .bashrc
+(defun set-python-path-from-shell-PYTHONPATH ()
+  (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PYTHONPATH'")))
+    (setenv "PYTHONPATH" path-from-shell)))
+
+(if window-system (set-python-path-from-shell-PYTHONPATH))
+
+
 
 (provide 'rano-packages)
 ;;; rano-packages.el ends here

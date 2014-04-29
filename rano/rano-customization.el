@@ -79,5 +79,10 @@
 (setq c-default-style "bsd"
       c-basic-offset 4)
 
+
+;; highlight indentation
+(set-face-background 'highlight-indentation-face "#073642")
+(set-face-background 'highlight-indentation-current-column-face "#586e75")
+
 (provide 'rano-customization)
 ;;; end rano-customization.el

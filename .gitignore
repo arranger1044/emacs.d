@@ -22,3 +22,6 @@ projectile-bookmarks.eld
 
 # package cookies
 url/cookies
+
+# python env
+.python-environments/*
