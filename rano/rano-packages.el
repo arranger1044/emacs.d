@@ -371,8 +371,8 @@
 (show-smartparens-global-mode +1)
 (smartparens-global-mode t)
 
-;; org mode
-(setq org-log-done 'time)
+;; org mode setup
+(require 'org-mode-setup)
 
 ;; winner mode
 ;; (when (fboundp 'winner-mode
