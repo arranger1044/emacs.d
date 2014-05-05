@@ -5,6 +5,7 @@
 ;;override theme (must come after package initialization
 ;;(setq solarized-high-contrast-mode-line t)
 (setq solarized-distinct-fringe-background t)
+(setq solarized-use-more-italic t)
 (load-theme 'solarized-dark t)
 
 ;; custom-font
