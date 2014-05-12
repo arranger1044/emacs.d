@@ -1,8 +1,11 @@
+;;; package --- Summary
+
+;;; Commentary:
 ;;; begin rano-bindings.el
 
 ;; key bindings for defaults and packages
 
-
+;;; Code:
 ;; smex for M-x completion
 (global-set-key (kbd "M-x") 'smex)
 (global-set-key (kbd "M-X") 'smex-major-mode-commands)
@@ -47,13 +50,22 @@
 
 ;; copying leaving the region highlighted
 (defun kill-ring-save-keep-highlight (beg end)
-  "Keep the region active after the kill"
+  "Keep the region active after the kill."
   (interactive "r")
   (prog1 (kill-ring-save beg end)
     (setq deactivate-mark nil)))
 
 (global-set-key (kbd "M-W") 'kill-ring-save-keep-highlight)
 
+;; right click to forword search
+(defun xah-click-to-search (πclick)
+  "Mouse click to start `isearch-forward-symbol-at-point' (Emacs 24.4) at clicked point."
+  (interactive "e")
+  (let ((p1 (posn-point (event-start πclick))))
+    (goto-char p1)
+    (isearch-forward-symbol-at-point)
+    ))
+(global-set-key (kbd "<mouse-3>") 'xah-click-to-search)
 ;; icicles binding
 					;(icy-mode 1)
 
@@ -79,4 +91,4 @@
 
 
 (provide 'rano-bindings)
-;;; end rano-bindings.el
+;;; rano-bindings.el ends here
