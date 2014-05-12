@@ -33,6 +33,7 @@
         flx-ido
         smex
         flycheck
+	idomenu
         undo-tree
         projectile
         magit
@@ -59,6 +60,8 @@
 	jedi
 	python-environment
 	fic-mode
+	solarized-theme
+	zenburn-theme
         ))
 
 (when (not package-archive-contents)
@@ -164,15 +167,12 @@
 ;; disable ido faces to see flx highlights.
 (setq ido-use-faces nil)
 ;(setq flx-ido-use-faces nil)
-					;(require 'idomenu)
+;(require 'idomenu)
 
 
 (require 'smex) ; Not needed if you use package.el
 (smex-initialize)
 
-;;helm for substituting ido+smex?
-					;(require 'helm-config)
-					;(helm-mode 1)
 
 ;; fly-make for inline static syntax messages
 ;;(require 'flymake)
@@ -234,35 +234,8 @@
 ;;(mapc 'yas/load-directory yas/root-directory)
 (yas-global-mode 1)
 
-;; workgroups2 for session management
-;(require 'workgroups2)
-;(setq wg-default-session-file "~/.emacs.d/rano/workgroups/.emacs_workgroups")
-;(workgroups-mode 1)
-;(require 'desktop)
-;(desktop-restore-in-current-display t)
-					;(require 'desktop)
-;(setq desktop-restore-frames nil)
 (desktop-save-mode 1)
 
-;(require 'workgroups2)
-;(setq wg-use-default-session-file nil
-;      wg-default-session-file  "~/.emacs.d/rano/workgroups/session")
-;(add-hook 'auto-save-hook 'wg-update-current-workgroup-working-wconfig)
-;(add-hook 'emacs-startup-hook 'wg-reload-session)
-;(workgroups-mode 1)
-
-
-;; powerline
-(require 'powerline)
-;;(setq powerline-default-separator 'curve)
-;; (powerline-reset)
-;;(powerline-default-theme)
-(powerline-center-theme)
-
-;; flycheck-color-mode-line
-(require 'flycheck-color-mode-line)
-(eval-after-load "flycheck"
-  '(add-hook 'flycheck-mode-hook 'flycheck-color-mode-line-mode))
 
 ;; processing mode
 (require 'processing-mode)
@@ -298,15 +271,6 @@
 ;; ace-jump mode
 ;; jumping throught text via char finding
 (require 'ace-jump-mode)
-
-;; (require 'sublimity)
-;; ;; (require 'sublimity-scroll)
-;; (require 'sublimity-map)
-;; (setq sublimity-map-on-scroll t)
-;; (sublimity-global-mode)
-;; (sublimity-)
-;; ;; (setq sublimity-scroll-weight 1
-;; ;;       sublimity-scroll-drift-length 10)
 
 (require 'smooth-scrolling)
 
@@ -467,28 +431,28 @@
 ;; -----------------------------
 
 					; use autocompletion, but don't start to autocomplete after a dot
-(setq ein:complete-on-dot -1)
-(setq ein:use-auto-complete 1)
+;; (setq ein:complete-on-dot -1)
+;; (setq ein:use-auto-complete 1)
 
-;; ; set python console args
-(setq ein:console-args
-      (if (system-is-mac)
-          '("--gui=osx" "--matplotlib=osx" "--colors=Linux" "--pylab")
-        (if (system-is-linux)
-            '("--gui=wx" "--matplotlib=wx" "--colors=Linux" "--pylab"))))
+;; ;; ; set python console args
+;; (setq ein:console-args
+;;       (if (system-is-mac)
+;;           '("--gui=osx" "--matplotlib=osx" "--colors=Linux" "--pylab")
+;;         (if (system-is-linux)
+;;             '("--gui=wx" "--matplotlib=wx" "--colors=Linux" "--pylab"))))
 
-;; ; timeout settings
-(setq ein:query-timeout 1000)
+;; ;; ; timeout settings
+;; (setq ein:query-timeout 1000)
 
-; IPython notebook
-;;(include-plugin "emacs-ipython-notebook/lisp")
-(require 'ein)
+;; ; IPython notebook
+;; ;;(include-plugin "emacs-ipython-notebook/lisp")
+;; (require 'ein)
 
-; shortcut function to load notebooklist
-(defun load-ein ()
-  (ein:notebooklist-load)
-  (interactive)
-  (ein:notebooklist-open))
+;; ; shortcut function to load notebooklist
+;; (defun load-ein ()
+;;   (ein:notebooklist-load)
+;;   (interactive)
+;;   (ein:notebooklist-open))
 
                                         ; Set PYTHONPATH, because we don't load .bashrc
 (defun set-python-path-from-shell-PYTHONPATH ()
