@@ -113,8 +113,8 @@
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 ;; frame-restore to restore last frame sizes and position
-(add-to-list 'load-path "~/.emacs.d/rano/frame-restore")
-(require 'frame-restore)
+;; (add-to-list 'load-path "~/.emacs.d/rano/frame-restore")
+;; (require 'frame-restore)
 
 ;; auto-complete
 (require 'auto-complete)
@@ -366,10 +366,10 @@
 ;; (autoload 'enable-paredit-mode "paredit"
 ;;   "Turn on pseudo-structural editing of Lisp code." t)
 
-(require 'smartparens-config)
-;; (smartparens-mode t)
-(show-smartparens-global-mode +1)
-(smartparens-global-mode t)
+;; (require 'smartparens-config)
+;; ;; (smartparens-mode t)
+;; (show-smartparens-global-mode +1)
+;; (smartparens-global-mode t)
 
 ;; org mode setup
 (require 'org-mode-setup)
