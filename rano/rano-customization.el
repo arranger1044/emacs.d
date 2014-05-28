@@ -6,11 +6,20 @@
 (setq solarized-high-contrast-mode-line t)
 (setq solarized-distinct-fringe-background t)
 (setq solarized-use-more-italic t)
- (load-theme 'solarized-dark t)
+(load-theme 'solarized-dark t)
+
+;; (require 'color-theme-sanityinc-tomorrow)
+;; (color-theme-sanityinc-tomorrow-eighties)
+
+;; (require 'moe-theme)
+;; ;; Choose the one you like, (moe-light) or (moe-dark)
+;; (moe-light)
+;; (setq moe-theme-mode-line-color 'orange)
+;(powerline-moe-theme)
 
 ;;(load-theme 'solarized-light t)
 ;;(load-theme 'misterioso t)
-;; (load-theme 'zenburn t)
+;;(load-theme 'zenburn t)
 
 ;; (setq powerline-color1 "#073642")
 ;; (setq powerline-color2 "#002b36")
@@ -22,7 +31,7 @@
 ;; (set-face-attribute 'mode-line-inactive nil
 ;;                     :box nil)
 
-;; ;; powerline
+;; powerline
 ;; (require 'powerline)
 ;; ;; ;;(setq powerline-default-separator 'curve)
 ;; ;; ;; (powerline-reset)
@@ -38,7 +47,9 @@
 ;(add-to-list 'default-frame-alist '(font . "Inconsolata 14"))
 					;(set-frame-font "Inconsolata 13")
 					;(set-face-attribute 'default nil :font "Inconsolata-13")
-(set-face-attribute 'default nil :font "Inconsolata-13")
+(cond ((system-is-mac) (set-face-attribute 'default nil :font "Inconsolata-13:bold"))
+      ((system-is-linux) (set-face-attribute 'default nil :font "Inconsolata-10:bold")))
+
 
 ;; line numbers
 (global-linum-mode t)
@@ -60,7 +71,14 @@
 ;; shorten yes-no messages
 (fset 'yes-or-no-p 'y-or-n-p)
 
-
+;; putting all the auto-saved files togethe
+(defconst emacs-tmp-dir (format "%s/%s%s/" temporary-file-directory "emacs" (user-uid)))
+(setq backup-directory-alist
+      `((".*" . ,emacs-tmp-dir)))
+(setq auto-save-file-name-transforms
+      `((".*" ,emacs-tmp-dir t)))
+(setq auto-save-list-file-prefix
+      emacs-tmp-dir)
 
 ;; Disable abbrev save to prevent weird annoying
 (setq abbrev-file-name "~/.emacs.d/abbrev_defs")
@@ -85,6 +103,11 @@
 (require 'paren)
 (setq show-paren-style 'parenthesis)
 (show-paren-mode +1)
+
+(require 'smartparens-config)
+;; ;; (smartparens-mode t)
+(show-smartparens-global-mode +1)
+(smartparens-global-mode t)
 
 					;(setq show-paren-style 'parentheses)
 ;(set-face-attribute 'show-paren-match nil :weight 'extra-bold)
@@ -112,5 +135,11 @@
 (set-face-background 'highlight-indentation-face "#073642")
 (set-face-background 'highlight-indentation-current-column-face "#586e75")
 
+;; adding a newline if going after the last lin
+(setq next-line-add-newlines t)
+
+;; srgb enabling under os x
+(setq ns-use-srgb-colorspace t)
+
 (provide 'rano-customization)
-;;; end rano-customization.el
+;;; rano-customization.el ends here

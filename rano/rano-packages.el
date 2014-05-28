@@ -62,6 +62,11 @@
 	fic-mode
 	solarized-theme
 	zenburn-theme
+	moe-theme
+	color-theme-sanityinc-tomorrow
+	markdown-mode
+	yaml-mode
+	py-autopep8
         ))
 
 (when (not package-archive-contents)
@@ -82,6 +87,16 @@
                                    (not (package-built-in-p x))
                                    (package-installed-p x)))
                   (mapcar 'car package-archive-contents))))
+
+
+;; system checking
+(defun system-is-mac ()
+  (interactive)
+  (string-equal system-type "darwin"))
+
+(defun system-is-linux ()
+  (interactive)
+  (string-equal system-type "gnu/linux"))
 
 
 ;; sr-sppedbar
@@ -163,7 +178,7 @@
 (ido-mode 1)
 (ido-everywhere 1)
 (flx-ido-mode 1)
-(autoload 'idomenu "idomenu" nil t)
+;;(autoload 'idomenu "idomenu" nil t)
 ;; disable ido faces to see flx highlights.
 (setq ido-use-faces nil)
 ;(setq flx-ido-use-faces nil)
@@ -318,8 +333,13 @@
 ;; (add-hook  'LaTeX-mode-hook  'pdf-preview)
 
 (setq TeX-view-program-selection '((output-pdf "Preview")))
-(setq TeX-view-program-list
-      '(("Preview" "open -a Preview.app %s.pdf")))
+
+;; setting the pdf previewer
+(cond ((system-is-mac) (setq TeX-view-program-list
+                             '(("Preview" "open -a Preview.app %s.pdf"))))
+      ((system-is-linux) (setq TeX-view-program-list
+                               '(("Evince" "evince --page-index=%(outpage) %o")))))
+
 (setq-default ispell-program-name "aspell")
 (setq-default ispell-extra-args '("--reverse"))
 (setq ispell-dictionary "italiano")
@@ -329,11 +349,6 @@
 ;; ;; paredit
 ;; (autoload 'enable-paredit-mode "paredit"
 ;;   "Turn on pseudo-structural editing of Lisp code." t)
-
-;; (require 'smartparens-config)
-;; ;; (smartparens-mode t)
-;; (show-smartparens-global-mode +1)
-;; (smartparens-global-mode t)
 
 ;; org mode setup
 (require 'org-mode-setup)
@@ -381,40 +396,9 @@
 
 
 
-;; from python.el
-;;(require 'python)
-(require 'python-mode)
+;; python setup
+(require 'python-setup)
 
-;; (setq-default python-indent-guess-indent-offset nil)
-;; (setq-default python-indent-offset 4)
-;; (setq-default python-indent 4)
-
-(autoload 'python-mode "python-mode" "Python Mode." t)
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-(add-to-list 'interpreter-mode-alist '("python" . python-mode))
-
-(defun system-is-mac ()
-  (interactive)
-  (string-equal system-type "darwin"))
-
-(defun system-is-linux ()
-  (interactive)
-  (string-equal system-type "gnu/linux"))
-
-(setq
- python-shell-interpreter "ipython"
- python-shell-interpreter-args (if (system-is-mac)
-                                   "--gui=osx --matplotlib=osx --colors=Linux --pylab"
-                                 (if (system-is-linux)
-                                     "--gui=wx --matplotlib=wx --colors=Linux --pylab"))
- python-shell-prompt-regexp "In \\[[0-9]+\\]: "
- python-shell-prompt-output-regexp "Out \\[[0-9]+\\]: "
- python-shell-completion-setup-code
- "from IPython.core.completerlib import module_completion"
- python-shell-completion-module-string-code
- "';'.join(module_completion('''%s'''))\n"
- python-shell-completion-string-code
- "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
 ;; fic-mode hihglighting FIXME TODO BUG
 (require 'fic-mode)
@@ -423,44 +407,16 @@
 (add-hook 'processing-mode-hook 'turn-on-fic-mode)
 (add-hook 'python-mode-hook 'turn-on-fic-mode)
 
-;; (add-hook 'python-mode-hook (lambda () (setq python-indent-offset 4)))
 
 
-;; -----------------------------
-;; emacs IPython notebook config
-;; -----------------------------
+;; markdown
+(require 'markdown-mode)
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-					; use autocompletion, but don't start to autocomplete after a dot
-;; (setq ein:complete-on-dot -1)
-;; (setq ein:use-auto-complete 1)
-
-;; ;; ; set python console args
-;; (setq ein:console-args
-;;       (if (system-is-mac)
-;;           '("--gui=osx" "--matplotlib=osx" "--colors=Linux" "--pylab")
-;;         (if (system-is-linux)
-;;             '("--gui=wx" "--matplotlib=wx" "--colors=Linux" "--pylab"))))
-
-;; ;; ; timeout settings
-;; (setq ein:query-timeout 1000)
-
-;; ; IPython notebook
-;; ;;(include-plugin "emacs-ipython-notebook/lisp")
-;; (require 'ein)
-
-;; ; shortcut function to load notebooklist
-;; (defun load-ein ()
-;;   (ein:notebooklist-load)
-;;   (interactive)
-;;   (ein:notebooklist-open))
-
-                                        ; Set PYTHONPATH, because we don't load .bashrc
-(defun set-python-path-from-shell-PYTHONPATH ()
-  (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PYTHONPATH'")))
-    (setenv "PYTHONPATH" path-from-shell)))
-
-(if window-system (set-python-path-from-shell-PYTHONPATH))
-
+;; yaml
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
 
 (provide 'rano-packages)

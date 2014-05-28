@@ -23,6 +23,8 @@
 (global-set-key (kbd "C-x b") 'ido-switch-buffer)
 ;; idomenu
 (global-set-key (kbd "C-x C-i") 'idomenu)
+;; 
+;(global-set-key (kbd "M-i") 'ido-goto-symbol)
 
 ;; find-file in project
 (global-set-key (kbd "C-x C-M-f") 'find-file-in-project)
