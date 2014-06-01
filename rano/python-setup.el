@@ -9,7 +9,7 @@
 ;; (setq-default python-indent-offset 4)
 ;; (setq-default python-indent 4)
 
-(autoload 'python-mode "python-mode" "Python Mode." t)
+;(autoload 'python-mode "python-mode" "Python Mode." t)
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 (add-to-list 'interpreter-mode-alist '("python" . python-mode))
 
@@ -29,6 +29,12 @@
  "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
 ;; (add-hook 'python-mode-hook (lambda () (setq python-indent-offset 4)))
+
+(setq-default py-shell-name "ipython")
+(setq-default py-which-bufname "IPython")
+(setq py-force-py-shell-name-p t)
+
+(setq py-smart-indentation t)
 
 
 ;; -----------------------------
@@ -74,7 +80,7 @@
 ;; keybinding for ipython interpreter
 (add-hook 'python-mode-hook
           (lambda ()
-	    (local-set-key (kbd "C-c i") 'ipython-dedicated)
+	    (local-set-key (kbd "C-c i") 'py-shell)
             ))
 
 (provide 'python-setup)
