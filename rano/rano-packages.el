@@ -353,12 +353,14 @@
 ;; (setq TeX-view-program-selection '((output-pdf "Preview")))
 
 ;; setting the pdf previewer
-(cond ((system-is-mac)
-       (setq TeX-view-program-list '(("Preview" "open -a Preview.app %s.pdf"))))
+(cond 
       ((system-is-linux)
        (setq TeX-view-program-list '(("Evince" "evince --page-index=%(outpage) %o")))
        (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-       (setq TeX-source-correlate-start-server t)))
+       (setq TeX-source-correlate-start-server t))
+      ((system-is-mac)
+       (setq TeX-view-program-selection '((output-pdf "Preview")))
+       (setq TeX-view-program-list '(("Preview" "open -a Preview.app %s.pdf")))))
 
 (setq-default ispell-program-name "aspell")
 (setq-default ispell-extra-args '("--reverse"))
