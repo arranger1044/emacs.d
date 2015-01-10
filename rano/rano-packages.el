@@ -67,6 +67,9 @@
 	markdown-mode
 	yaml-mode
 	py-autopep8
+	vagrant
+	vagrant-tramp
+	git-timemachine
         ))
 
 (when (not package-archive-contents)
@@ -256,9 +259,16 @@
 (require 'processing-mode)
 (autoload 'processing-mode "processing-mode" "Processing mode" t)
 (add-to-list 'auto-mode-alist '("\\.pde$" . processing-mode))
-(setq processing-location "/usr/bin/processing-java")
-(setq processing-application-dir "/Applications/Processing.app")
-(setq processing-sketchbook-dir "~/Documents/Processing")
+(cond ((system-is-mac) (setq processing-location "/usr/bin/processing-java")
+       (setq processing-application-dir "/Applications/Processing.app")
+       (setq processing-sketchbook-dir "~/Documents/Processing"))
+      ((system-is-linux) (setq processing-location "/usr/local/bin/processing-java")
+       (setq processing-application-dir "/usr/local/bin/processing")
+       (setq processing-sketchbook-dir "~/sketchbook")))
+
+;; (setq processing-location "/usr/bin/processing-java")
+;; (setq processing-application-dir "/Applications/Processing.app")
+;; (setq processing-sketchbook-dir "~/Documents/Processing")
 (defun processing-mode-init ()
   (make-local-variable 'ac-sources)
   (setq ac-sources '(ac-source-dictionary ac-source-yasnippet))
@@ -277,11 +287,19 @@
 (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
 (autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
 (autoload 'mercury-mode "prolog" "Major mode for editing Mercury programs." t)
-(setq prolog-system 'swi)
-(setq prolog-program-name "/usr/local/bin/swipl")
+;; (setq prolog-system 'swi)
+;; (setq prolog-program-name "/usr/local/bin/swipl")
+;; (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode)
+;;                                 ("\\.m$" . mercury-mode))
+;;                               auto-mode-alist))
+(setq prolog-system 'yap)
+(setq prolog-program-name "/usr/local/bin/yap")
 (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode)
+				("\\.plt$" . prolog-mode)
                                 ("\\.m$" . mercury-mode))
                               auto-mode-alist))
+(setq prolog-indent-width 8)
+(setq prolog-align-comments-flag nil)
 
 ;; ace-jump mode
 ;; jumping throught text via char finding
@@ -332,13 +350,15 @@
 ;;                '("^pdf$" "." "open -a Preview.app %s.pdf")))
 ;; (add-hook  'LaTeX-mode-hook  'pdf-preview)
 
-(setq TeX-view-program-selection '((output-pdf "Preview")))
+;; (setq TeX-view-program-selection '((output-pdf "Preview")))
 
 ;; setting the pdf previewer
-(cond ((system-is-mac) (setq TeX-view-program-list
-                             '(("Preview" "open -a Preview.app %s.pdf"))))
-      ((system-is-linux) (setq TeX-view-program-list
-                               '(("Evince" "evince --page-index=%(outpage) %o")))))
+(cond ((system-is-mac)
+       (setq TeX-view-program-list '(("Preview" "open -a Preview.app %s.pdf"))))
+      ((system-is-linux)
+       (setq TeX-view-program-list '(("Evince" "evince --page-index=%(outpage) %o")))
+       (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+       (setq TeX-source-correlate-start-server t)))
 
 (setq-default ispell-program-name "aspell")
 (setq-default ispell-extra-args '("--reverse"))
@@ -418,6 +438,11 @@
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
+;; vagrant integration
+(require 'vagrant)
+(require 'vagrant-tramp)
+(eval-after-load 'tramp
+  '(vagrant-tramp-enable))
 
 (provide 'rano-packages)
 ;;; rano-packages.el ends here

@@ -48,7 +48,7 @@
 					;(set-frame-font "Inconsolata 13")
 					;(set-face-attribute 'default nil :font "Inconsolata-13")
 (cond ((system-is-mac) (set-face-attribute 'default nil :font "Inconsolata-13:bold"))
-      ((system-is-linux) (set-face-attribute 'default nil :font "Inconsolata-10:bold")))
+      ((system-is-linux) (set-face-attribute 'default nil :font "Inconsolata-12:bold")))
 
 
 ;; line numbers

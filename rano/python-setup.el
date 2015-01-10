@@ -36,7 +36,7 @@
 
 (setq py-smart-indentation t)
 
-
+(define-key py-mode-map [(control backspace)] 'backward-kill-word)
 ;; -----------------------------
 ;; emacs IPython notebook config
 ;; -----------------------------
