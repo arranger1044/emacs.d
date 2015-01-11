@@ -330,6 +330,8 @@
 (setq LaTeX-enable-toolbar t)
 
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(add-hook 'LaTeX-mode-hook 'turn-on-flyspell)
+;; (add-hook 'LaTeX-mode-hook '(flyspell-mode t))
 (setq reftex-plug-into-AUCTeX t)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
