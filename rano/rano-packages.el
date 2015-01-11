@@ -330,11 +330,17 @@
 (setq LaTeX-enable-toolbar t)
 
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-(add-hook 'LaTeX-mode-hook 'turn-on-flyspell)
-;; (add-hook 'LaTeX-mode-hook '(flyspell-mode t))
+;; (add-hook 'LaTeX-mode-hook 'turn-on-flyspell)
+
 (setq reftex-plug-into-AUCTeX t)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
+(setq-default ispell-program-name "aspell")
+(setq-default ispell-extra-args '("--reverse"))
+(setq ispell-dictionary "en_US")
+(add-hook 'LaTeX-mode-hook 'ispell)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook '(flyspell-mode t))
 
 ;; setting the environment
 ;; (getenv "PATH")
@@ -364,9 +370,8 @@
        (setq TeX-view-program-selection '((output-pdf "Preview")))
        (setq TeX-view-program-list '(("Preview" "open -a Preview.app %s.pdf")))))
 
-(setq-default ispell-program-name "aspell")
-(setq-default ispell-extra-args '("--reverse"))
-(setq ispell-dictionary "italiano")
+
+;; (setq ispell-dictionary "en_US")
 ;; (setq TeX-view-program-list
 ;;       '(("Preview" "open -a Preview.app %s.pdf")))
 
