@@ -70,7 +70,9 @@
 	vagrant
 	vagrant-tramp
 	git-timemachine
+	clips-mode
         ))
+
 
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -101,7 +103,13 @@
   (interactive)
   (string-equal system-type "gnu/linux"))
 
-
+;;
+;; packages and customizations
+(setq fill-column 80)
+(add-hook 'text-mode-hook
+          (lambda ()
+            (auto-fill-mode t))
+          ) 
 ;; sr-sppedbar
 ;; show the speedbar in the same frame (another window)
 (require 'sr-speedbar)
@@ -132,7 +140,8 @@
 ;(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
-
+(add-hook 'clips-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'inferior-clips-mode-hook 'rainbow-delimiters-mode)
 ;; frame-restore to restore last frame sizes and position
 ;; (add-to-list 'load-path "~/.emacs.d/rano/frame-restore")
 ;; (require 'frame-restore)
@@ -159,6 +168,7 @@
   (setq ac-sources (append '(ac-source-clang ac-source-yasnippet) ac-sources)))
 (add-hook 'c-mode-common-hook 'my-ac-cc-mode-setup)
 (add-hook 'c++-mode-hook 'my-ac-cc-mode-setup)
+(add-hook 'clips-mode-hook 'my-ac-cc-mode-setup)
 ;; ac-source-gtags
 (my-ac-config)
 
@@ -309,6 +319,7 @@
 
 ;;(require 'minimap)
 
+(require 'tex)
 ;; column-marker
 ; for highliting past 80 chars a column
 (require 'column-marker)
@@ -317,7 +328,8 @@
       '(c-mode-hook
         emacs-lisp-mode-hook
         c++-mode-hook
-        text-mode-hook))
+        text-mode-hook
+	TeX-mode-hook))
 
 (require 'highlight-symbol)
 
@@ -427,6 +439,10 @@
 
 ;; python setup
 (require 'python-setup)
+
+
+;; clips-mode
+(setq inferior-clips-program "clips")
 
 
 ;; fic-mode hihglighting FIXME TODO BUG
