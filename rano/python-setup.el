@@ -75,13 +75,20 @@
 (require 'py-autopep8)
 (add-hook 'python-mode-hook '(lambda ()
 			       (add-hook 'before-save-hook 'py-autopep8-before-save)))
-;(add-hook 'before-save-hook 'py-autopep8-before-save)
+(setq py-autopep8-options '("--max-line-length=99"))
+
+
+;; flycheck options
+(setq-default flycheck-flake8-maximum-line-length 99)
 
 ;; keybinding for ipython interpreter
 (add-hook 'python-mode-hook
           (lambda ()
 	    (local-set-key (kbd "C-c i") 'py-shell)
             ))
+
+;; cython mode for syntax highlighting
+(require 'cython-mode)
 
 (provide 'python-setup)
 ;;; python-setup ends here

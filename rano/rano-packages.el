@@ -57,6 +57,7 @@
 	tabbar-ruler
 	highlight-indentation
 	python-mode
+	cython-mode
 	jedi
 	python-environment
 	fic-mode
