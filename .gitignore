@@ -25,3 +25,6 @@ url/cookies
 
 # python env
 .python-environments/*
+
+# emacs session files
+session.*
