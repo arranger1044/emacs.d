@@ -1,5 +1,8 @@
 ;;; begin rano-customization.el
 
+(setq-default indent-tabs-mode nil)
+(setq tab-always-indent 'complete)
+
 ;; look&feel customizations
 
 ;;override theme (must come after package initialization

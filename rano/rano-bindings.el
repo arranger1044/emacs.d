@@ -37,6 +37,15 @@
 ;; ace-jump-mode
 (define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
 
+;;
+(defun beginning-of-line-or-indentation ()
+  "move to beginning of line, or indentation"
+  (interactive)
+  (if (bolp)
+      (back-to-indentation)
+    (beginning-of-line)))
+(global-set-key (kbd "C-a") 'beginning-of-line-or-indentation)
+
 ;; highlight symbol
 (global-set-key (kbd "C-<f3>") 'highlight-symbol-at-point)
 (global-set-key (kbd "<f3>") 'highlight-symbol-next)
@@ -59,7 +68,7 @@
 
 (global-set-key (kbd "M-W") 'kill-ring-save-keep-highlight)
 
-;; right click to forword search
+;; right click to forword search a symbol under the mouse
 (defun xah-click-to-search (πclick)
   "Mouse click to start `isearch-forward-symbol-at-point' (Emacs 24.4) at clicked point."
   (interactive "e")
@@ -68,8 +77,6 @@
     (isearch-forward-symbol-at-point)
     ))
 (global-set-key (kbd "<mouse-3>") 'xah-click-to-search)
-;; icicles binding
-					;(icy-mode 1)
 
 ;; brackets and special chars under mac os x with an italian keyboard
 ;; (define-key global-map (kbd "M-è") "[")

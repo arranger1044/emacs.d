@@ -22,7 +22,7 @@
 ;; auto installing when missing
 (setq rano-packages
       '(
-        auto-indent-mode
+        ;;auto-indent-mode
         rainbow-delimiters
 	rainbow-mode
         frame-restore
@@ -56,6 +56,8 @@
 	tabbar
 	tabbar-ruler
 	highlight-indentation
+        ein
+        elpy
 	python-mode
 	cython-mode
 	jedi
@@ -72,6 +74,7 @@
 	vagrant-tramp
 	git-timemachine
 	clips-mode
+        ess
         ))
 
 
@@ -106,11 +109,16 @@
 
 ;;
 ;; packages and customizations
-(setq fill-column 80)
+;;
+
+;;
+;; filling lines for simple text (but not markdown)
+(setq fill-column 99)
 (add-hook 'text-mode-hook
-          (lambda ()
-            (auto-fill-mode t))
-          ) 
+          (lambda () (auto-fill-mode t)))
+(add-hook 'markdown-mode-hook
+          (lambda () (auto-fill-mode -1)))
+
 ;; sr-sppedbar
 ;; show the speedbar in the same frame (another window)
 (require 'sr-speedbar)
@@ -125,7 +133,9 @@
   'interactive)
 
 (dolist (hook (list 'emacs-lisp-mode-hook
-                    'c++-mode-hook))
+                    'c++-mode-hook
+                    ;;'python-mode-hook
+                    ))
   (add-hook hook 'hideshowvis-enable))
 
 (hideshowvis-symbols)
@@ -133,8 +143,8 @@
 
 ;; auto-indent
 ;(setq auto-indent-on-visit-file t) ;; If you want auto-indent on for files
-(require 'auto-indent-mode)
-(auto-indent-global-mode)
+;; (require 'auto-indent-mode)
+;; (auto-indent-global-mode)
 
 ;; rainbox parenthesis (used for each programming language)
 (require 'rainbow-delimiters)
@@ -322,10 +332,10 @@
 
 (require 'tex)
 ;; column-marker
-; for highliting past 80 chars a column
+; for highliting past 99 chars a column
 (require 'column-marker)
 (mapc (lambda (hook)
-        (add-hook hook (lambda () (interactive) (column-marker-1 80))))
+        (add-hook hook (lambda () (interactive) (column-marker-1 99))))
       '(c-mode-hook
         emacs-lisp-mode-hook
         c++-mode-hook
@@ -352,8 +362,10 @@
 (setq-default ispell-extra-args '("--reverse"))
 (setq ispell-dictionary "en_US")
 (add-hook 'LaTeX-mode-hook 'ispell)
-(add-hook 'LaTeX-mode-hook 'flyspell-mode)
-(add-hook 'LaTeX-mode-hook '(flyspell-mode t))
+;; (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+;; (add-hook 'LaTeX-mode-hook '(flyspell-mode t))
+(dolist (hook '(LaTeX-mode-hook))
+      (add-hook hook (lambda () (flyspell-mode 1))))
 
 ;; setting the environment
 ;; (getenv "PATH")
@@ -423,15 +435,6 @@
 
 ;; highlight indentation
 (require 'highlight-indentation)
-(add-hook 'python-mode-hook 'highlight-indentation-mode)
-(add-hook 'python-mode-hook (lambda ()
-			      (highlight-indentation-set-offset 4)))
-
-
-;; jedi
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
-
 
 ;------------- taken from
 ;------------- https://github.com/jhamrick/emacs
@@ -439,6 +442,7 @@
 
 
 ;; python setup
+;; (load "/home/valerio/.emacs.d/elpa/python-mode-20161124.930/python-mode.el")
 (require 'python-setup)
 
 
@@ -447,11 +451,11 @@
 
 
 ;; fic-mode hihglighting FIXME TODO BUG
-(require 'fic-mode)
-(add-hook 'c++-mode-hook 'turn-on-fic-mode)
-(add-hook 'java-mode-hook 'turn-on-fic-mode)
-(add-hook 'processing-mode-hook 'turn-on-fic-mode)
-(add-hook 'python-mode-hook 'turn-on-fic-mode)
+;; (require 'fic-mode)
+;; (add-hook 'c++-mode-hook 'turn-on-fic-mode)
+;; (add-hook 'java-mode-hook 'turn-on-fic-mode)
+;; (add-hook 'processing-mode-hook 'turn-on-fic-mode)
+;; (add-hook 'python-mode-hook 'turn-on-fic-mode)
 
 
 
@@ -469,6 +473,9 @@
 (require 'vagrant-tramp)
 (eval-after-load 'tramp
   '(vagrant-tramp-enable))
+
+;; emacs speaks statistics (ESS)
+(require 'ess)
 
 (provide 'rano-packages)
 ;;; rano-packages.el ends here
