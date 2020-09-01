@@ -13,7 +13,8 @@
   (require 'package)
   
   (add-to-list 'package-archives '("melpa" .
-				   "http://melpa.milkbox.net/packages/") t)
+					;"http://melpa.milkbox.net/packages/") t)
+				   "http://melpa.org/packages/") t)
   (add-to-list 'package-archives '("marmalade" .
 				   "http://marmalade-repo.org/packages/") t)
   (package-initialize)
@@ -47,7 +48,7 @@
 	fold-dwim
 	smooth-scrolling
 	auctex
-	column-marker
+	;;column-marker
 	highlight-symbol
 	cider
 	smartparens
@@ -333,14 +334,14 @@
 (require 'tex)
 ;; column-marker
 ; for highliting past 99 chars a column
-(require 'column-marker)
-(mapc (lambda (hook)
-        (add-hook hook (lambda () (interactive) (column-marker-1 99))))
-      '(c-mode-hook
-        emacs-lisp-mode-hook
-        c++-mode-hook
-        text-mode-hook
-	TeX-mode-hook))
+;;(require 'column-marker)
+;; (mapc (lambda (hook)
+;;         (add-hook hook (lambda () (interactive) (column-marker-1 99))))
+;;       '(c-mode-hook
+;;         emacs-lisp-mode-hook
+;;         c++-mode-hook
+;;         text-mode-hook
+;; 	TeX-mode-hook))
 
 (require 'highlight-symbol)
 
